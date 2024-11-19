@@ -17,7 +17,7 @@ function EventsPage() {
 export default EventsPage;
 
 export async function loader() {
-  const response = await fetch('http://localhost:8080/eventskk');
+  const response = await fetch('http://localhost:8080/events');
       
   if (!response.ok) {
     // return {isError: true, message: 'the message here'}; // It is possible but we will not do this not recommended 

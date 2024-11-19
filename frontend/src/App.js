@@ -2,13 +2,16 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomePage from './pages/Home';
 import Events, { loader as EventsLoader } from './pages/Events';
 import RootLayout from './pages/RootLayout';
-import EventsDetailPage from './pages/EventDetail';
+import EventsDetailPage, {
+  loader as EventLoader,
+  action as eventDeleteAction
+} from './pages/EventDetail';
 import NewEventPage from './pages/NewEvent';
 import EditEventPage from './pages/EditEvent';
 import EventsNavigation from './components/EventsNavigation';
 import EventsLayout from './pages/EventsLayout';
-import { loader } from './pages/Events';
 import ErrorPage from './pages/Error';
+import { action as manipulateEventAction } from './components/EventForm';
 
 
 function App() {
@@ -21,9 +24,16 @@ function App() {
       {index: true, element: <HomePage />},
       {path: '/events', element: <EventsLayout />, children: [
         {index: true, element: <Events />, loader: EventsLoader},
-        {path: '/events/:eventId', element: <EventsDetailPage />},
-        {path: '/events/new', element: <NewEventPage />},
-        {path: '/events/:eventId/edit', element: <EditEventPage />},
+        {path: 'new', element: <NewEventPage />, action: manipulateEventAction},
+        {
+          path: ':eventId',
+          id: 'event-detail',
+          loader: EventLoader,
+          children: [
+            {index: true,  element: <EventsDetailPage />, action: eventDeleteAction},
+            {path: 'edit', element: <EditEventPage />, action: manipulateEventAction},
+          ]
+        },
       ]},
     ]},
 
